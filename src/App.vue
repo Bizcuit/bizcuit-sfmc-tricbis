@@ -1,126 +1,128 @@
 <template>
-	<div id="app">
-		<div class="field">
-			<label class="label is-small">Headline</label>
-			<div class="control">
-				<input
-					class="input is-small"
-					type="text"
-					placeholder="e.g. Product Recommendations"
-					v-model="content.headline"
-				/>
-			</div>
-		</div>
+    <div id="app">
+        <div class="field">
+            <label class="label is-small">Headline</label>
+            <div class="control">
+                <input
+                    class="input is-small"
+                    type="text"
+                    placeholder="e.g. Product Recommendations"
+                    v-model="content.headline"
+                />
+            </div>
+        </div>
 
-		<div class="columns">
-			<div class="column">
-				<div class="field">
-					<label class="label is-small">Field Name:</label>
-					<div class="control">
-						<div class="select is-small">
-							<select v-model="content.field">
-								<option value="Trigger_Catalog_Items">
-									Trigger Catalog Items
-								</option>
-								<option value="Recommendations">Recommendations</option>
-								<option value="Additional_Recommendations">
-									Additional Recommendations
-								</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="column">
-				<div class="field">
-					<label class="label is-small">Block Width:</label>
-					<div class="control">
-						<div class="select is-small">
-							<select v-model="content.blockWidth">
-								<option value="600">600px</option>
-								<option value="800">800px</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label is-small">Field Name:</label>
+                    <div class="control">
+                        <div class="select is-small">
+                            <select v-model="content.field">
+                                <option value="Trigger_Catalog_Items">
+                                    Trigger Catalog Items
+                                </option>
+                                <option value="Recommendations">Recommendations</option>
+                                <option value="Additional_Recommendations">
+                                    Additional Recommendations
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label is-small">Block Width:</label>
+                    <div class="control">
+                        <div class="select is-small">
+                            <select v-model="content.blockWidth">
+                                <option value="600">600px</option>
+                                <option value="800">800px</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="columns">
-			<div class="column">
-				<div class="field">
-					<label class="label is-small">Items per row:</label>
-					<div class="control">
-						<div class="select is-small">
-							<select v-model="content.numberOfItemsPerRow">
-								<option value="1">1</option>
-								<option value="2">2</option>
-								<option value="3">3</option>
-								<option value="4">4</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="column">
-				<div class="field">
-					<label class="label is-small">Number of rows:</label>
-					<div class="control">
-						<div class="select is-small">
-							<select v-model="content.numberOfRows">
-								<option value="1">1</option>
-								<option value="2">2</option>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <label class="label is-small">Items per row:</label>
+                    <div class="control">
+                        <div class="select is-small">
+                            <select v-model="content.numberOfItemsPerRow">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
                                 <option value="3">3</option>
                                 <option value="4">4</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="field">
+                    <label class="label is-small">Number of rows:</label>
+                    <div class="control">
+                        <div class="select is-small">
+                            <select v-model="content.numberOfRows">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import ContentBlockSDK from "blocksdk";
 
 export default {
-	name: "App",
-	components: {},
+    name: "App",
+    components: {},
 
-	data: function () {
-		return {
-			system: {
-				sdk: new ContentBlockSDK(),
-			},
-			content: {
-				field: "Recommendations",
-				headline: "",
-				numberOfItemsPerRow: 3,
-				numberOfRows: 2,
-				blockWidth: 600,
-			},
-		};
-	},
-	methods: {
-		init() {
-			this.system.sdk.setBlockEditorWidth("400px");
-			this.system.sdk.getData((data) => {
-				if (data?.field) {
-					this.content = data;
-				}
-			});
-		},
+    data: function () {
+        return {
+            system: {
+                sdk: new ContentBlockSDK(),
+            },
+            content: {
+                field: "Recommendations",
+                headline: "",
+                numberOfItemsPerRow: 3,
+                numberOfRows: 2,
+                blockWidth: 600,
+            },
+        };
+    },
+    methods: {
+        init() {
+            this.system.sdk.setBlockEditorWidth("400px");
+            this.system.sdk.getData((data) => {
+                if (data?.field) {
+                    this.content = data;
+                }
+            });
+        },
 
-		getHtmlContent() {
-			const width = Math.floor(
-				this.content.blockWidth / this.content.numberOfItemsPerRow
-			);
-            const maxNumberOfItems = this.content.numberOfRows * this.content.numberOfItemsPerRow;
-			const ampOpen = "%".toLowerCase() + "%".toLowerCase() + "[".toLowerCase();
-			const ampClose = "]".toLowerCase() + "%".toLowerCase() + "%".toLowerCase();
+        getHtmlContent() {
+            const width = Math.floor(
+                this.content.blockWidth / this.content.numberOfItemsPerRow
+            );
+            const maxNumberOfItems =
+                this.content.numberOfRows * this.content.numberOfItemsPerRow;
+            const ampOpen = "%".toLowerCase() + "%".toLowerCase() + "[".toLowerCase();
+            const ampClose =
+                "]".toLowerCase() + "%".toLowerCase() + "%".toLowerCase();
 
-			return `
+            return `
             <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
                 <tr>
                     <td>
@@ -184,25 +186,26 @@ export default {
                 </tr>
             </table>
             `;
-		},
+        },
 
-		getPreviewContent() {
-			const width = Math.floor(
-				this.content.blockWidth / this.content.numberOfItemsPerRow
-			);
+        getPreviewContent() {
+            const width = Math.floor(
+                this.content.blockWidth / this.content.numberOfItemsPerRow
+            );
 
-            const maxNumberOfItems = this.content.numberOfRows * this.content.numberOfItemsPerRow;
-            
-            let tiles = '';
+            const maxNumberOfItems =
+                this.content.numberOfRows * this.content.numberOfItemsPerRow;
 
-            for(let i = 0; i < maxNumberOfItems; i++){
+            let tiles = "";
+
+            for (let i = 0; i < maxNumberOfItems; i++) {
                 tiles += `
                 <div style="margin-top: 10px; width: ${width}px; overflow: hidden; float: left;">
                     <div style="margin: 10px; height: ${width}px; background: #EEEEEE;"></div>
                 </div>`;
             }
 
-			return `
+            return `
                 <div style="margin: 10px auto; width: ${this.content.blockWidth}px">
                     <div style="padding: 10px; background: #EEEEEE; border: dashed 1px #CCCCCC; color: #AAAAAA; text-align: left; font-family: arial; font-size: 14px; line-height: 24px;">
                         <strong>Interaction Studio Content:</strong>  ${this.content.field}
@@ -213,36 +216,36 @@ export default {
                     <div>${tiles}</div>
                 </div>
             `;
-		},
+        },
 
-		setContent() {
-			this.system.sdk.setData(this.content);
-			this.system.sdk.setContent(this.getHtmlContent());
-			this.system.sdk.setSuperContent(this.getPreviewContent());
+        setContent() {
+            this.system.sdk.setData(this.content);
+            this.system.sdk.setContent(this.getHtmlContent());
+            this.system.sdk.setSuperContent(this.getPreviewContent());
 
-			console.log(this.getHtmlContent());
-		},
-	},
-	computed: {
-		blockContent() {
-			return JSON.stringify(this.content);
-		},
-	},
-	watch: {
-		blockContent() {
-			this.setContent();
-		},
-	},
-	created() {
-		this.init();
-	},
+            console.log(this.getHtmlContent());
+        },
+    },
+    computed: {
+        blockContent() {
+            return JSON.stringify(this.content);
+        },
+    },
+    watch: {
+        blockContent() {
+            this.setContent();
+        },
+    },
+    created() {
+        this.init();
+    },
 };
 </script>
 
 <style>
 #app {
-	margin: 0px auto;
-	padding: 20px;
-	max-width: 500px;
+    margin: 0px auto;
+    padding: 20px;
+    max-width: 500px;
 }
 </style>
